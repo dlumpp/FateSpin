@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36511.14 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FateSpin.Web", "FateSpin.Web\FateSpin.Web\FateSpin.Web.csproj", "{98569312-FB18-4BE0-BEF5-3D3878F19A62}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FateSpin.Web.Client", "FateSpin.Web\FateSpin.Web.Client\FateSpin.Web.Client.csproj", "{05C0C456-93CD-4706-BB02-9D541ACDD63A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{98569312-FB18-4BE0-BEF5-3D3878F19A62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98569312-FB18-4BE0-BEF5-3D3878F19A62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98569312-FB18-4BE0-BEF5-3D3878F19A62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98569312-FB18-4BE0-BEF5-3D3878F19A62}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05C0C456-93CD-4706-BB02-9D541ACDD63A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05C0C456-93CD-4706-BB02-9D541ACDD63A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05C0C456-93CD-4706-BB02-9D541ACDD63A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05C0C456-93CD-4706-BB02-9D541ACDD63A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {829E266A-B340-420A-8CB5-1E73DDB645FA}
+	EndGlobalSection
+EndGlobal
