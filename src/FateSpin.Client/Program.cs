@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
-namespace FateSpin.Web.Client
+namespace FateSpin.Client
 {
     internal class Program
     {

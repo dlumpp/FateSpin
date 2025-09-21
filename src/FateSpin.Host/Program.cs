@@ -1,7 +1,7 @@
-using FateSpin.Web.Client.Pages;
-using FateSpin.Web.Components;
+using FateSpin.Client.Pages;
+using FateSpin.Host.Components;
 
-namespace FateSpin.Web
+namespace FateSpin.Host
 {
     public class Program
     {

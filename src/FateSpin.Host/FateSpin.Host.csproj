@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FateSpin.Web.Client\FateSpin.Web.Client.csproj" />
+    <ProjectReference Include="..\FateSpin.Client\FateSpin.Client.csproj" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="10.0.0-rc.1.25451.107" />
   </ItemGroup>
 
