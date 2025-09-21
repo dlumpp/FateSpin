@@ -19,10 +19,10 @@ jobs:
         dotnet-version: '10.0.x'
 
     - name: Publish Blazor WebAssembly project
-      run: dotnet publish src/FateSpin.Client -c Release -o release -p:GHPages=true
+      run: dotnet publish src/FateSpin.Client -c Release -o publish -p:GHPages=true
 
     - name: Deploy to GitHub Pages
       uses: peaceiris/actions-gh-pages@v4
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: release/wwwroot
+        publish_dir: publish/wwwroot
