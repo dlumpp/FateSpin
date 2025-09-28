@@ -1,5 +1,10 @@
 <div class="wheel-container">
-    <div class="wheel" style="@GetWheelStyle()"></div>
+    <div class="wheel" 
+         style="@GetWheelStyle(); transform: rotate(@(currentRotation)deg); @(isSpinning ? "transition: transform 3s cubic-bezier(0.23, 1, 0.32, 1);" : "")"></div>
+    <div class="pointer"></div>
+    <button class="spin-button" @onclick="SpinWheel" disabled="@isSpinning">
+        @(isSpinning ? luckyClover : "Spin!")
+    </button>
 </div>
 
 @code {
@@ -17,6 +22,10 @@
         "#6f42c1"  // Purple
     };
 
+    private bool isSpinning = false;
+    private double currentRotation = 0;
+    private Random random = new Random();
+
     private string GetWheelStyle()
     {
         var gradientStops = new List<string>();
@@ -32,5 +41,39 @@
         }
         
         return $"background: conic-gradient(from 0deg, {string.Join(", ", gradientStops)});";
+    }
+
+    private string luckyClover = "\U0001F340";
+
+    private async Task SpinWheel()
+    {
+        if (isSpinning) return;
+        
+        isSpinning = true;
+        
+        // Generate random spin amount (multiple full rotations + random final position)
+        int fullRotations = random.Next(3, 6); // 3-5 full rotations
+        double finalPosition = random.NextDouble() * 360; // Random final position
+        double totalRotation = (fullRotations * 360) + finalPosition;
+        
+        // Calculate target rotation
+        double targetRotation = currentRotation + totalRotation;
+        
+        StateHasChanged();
+        
+        // Small delay to ensure the transition CSS is applied
+        await Task.Delay(50);
+        
+        // Set the new rotation which will trigger the CSS transition
+        currentRotation = targetRotation;
+        StateHasChanged();
+        
+        // Wait for animation to complete (3 seconds)
+        await Task.Delay(3000);
+        
+        // Normalize rotation to keep it within 0-360 range for future spins
+        currentRotation = currentRotation % 360;
+        isSpinning = false;
+        StateHasChanged();
     }
 }
