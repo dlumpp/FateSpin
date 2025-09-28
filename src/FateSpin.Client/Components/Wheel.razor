@@ -1,3 +1,36 @@
 <div class="wheel-container">
-    <div class="wheel"></div>
+    <div class="wheel" style="@GetWheelStyle()"></div>
 </div>
+
+@code {
+    // Hard-coded number of wedges for now - will be configurable later
+    private int numberOfWedges = 6;
+    private double degreesPerWedge => 360.0 / numberOfWedges;
+    
+    // Theme-appropriate colors that complement the dark background
+    private string[] wedgeColors = {
+        "#dc3545", // Original red
+        "#fd7e14", // Orange  
+        "#ffc107", // Yellow
+        "#198754", // Green
+        "#0dcaf0", // Cyan
+        "#6f42c1"  // Purple
+    };
+
+    private string GetWheelStyle()
+    {
+        var gradientStops = new List<string>();
+        double currentAngle = 0;
+        
+        for (int i = 0; i < numberOfWedges; i++)
+        {
+            string color = wedgeColors[i % wedgeColors.Length];
+            double nextAngle = currentAngle + degreesPerWedge;
+            
+            gradientStops.Add($"{color} {currentAngle}deg {nextAngle}deg");
+            currentAngle = nextAngle;
+        }
+        
+        return $"background: conic-gradient(from 0deg, {string.Join(", ", gradientStops)});";
+    }
+}
