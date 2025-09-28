@@ -29,6 +29,7 @@
     color: #333;
     font-weight: bold;
     font-size: 14px;
+    text-transform: uppercase;
     cursor: pointer;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     transition: all 0.2s ease;

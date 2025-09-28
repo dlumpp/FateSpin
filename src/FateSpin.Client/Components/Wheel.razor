@@ -3,7 +3,7 @@
          style="@GetWheelStyle(); transform: rotate(@(currentRotation)deg); @(isSpinning ? "transition: transform 3s cubic-bezier(0.23, 1, 0.32, 1);" : "")"></div>
     <div class="pointer"></div>
     <button class="spin-button" @onclick="SpinWheel" disabled="@isSpinning">
-        @(isSpinning ? luckyClover : "Spin")
+        @(isSpinning ? luckyClover : "Spin!")
     </button>
 </div>
 
