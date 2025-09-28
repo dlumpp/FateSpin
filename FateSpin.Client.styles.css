@@ -5,6 +5,7 @@
     justify-content: center;
     width: 100%;
     height: 100%;
+    position: relative;
 }
 
 .wheel[b-3ldpz1l8yu] {
@@ -13,6 +14,79 @@
     max-width: 500px;
     max-height: 500px;
     border-radius: 50%;
+    border: 3px solid #444;
+}
+
+.spin-button[b-3ldpz1l8yu] {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 14vw;
+    height: 14vw;
+    max-width: 80px;
+    max-height: 80px;
+    min-width: 40px;
+    min-height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #fff, #f0f0f0);
+    border: 3px solid #333;
+    color: #333;
+    font-weight: 800;
+    font-size: clamp(8px, 2vw, 20px);
+    text-transform: uppercase;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: all 0.2s ease;
+    z-index: 10;
+}
+
+.spin-button:hover:not(:disabled)[b-3ldpz1l8yu] {
+    background: linear-gradient(135deg, #f8f8f8, #e8e8e8);
+    transform: translate(-50%, -50%) scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+.spin-button:active:not(:disabled)[b-3ldpz1l8yu] {
+    transform: translate(-50%, -50%) scale(0.95);
+}
+
+.spin-button:disabled[b-3ldpz1l8yu] {
+    background: linear-gradient(135deg, #ccc, #bbb);
+    color: #666;
+    cursor: not-allowed;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.pointer[b-3ldpz1l8yu] {
+    position: absolute;
+    right: calc(20vw - 20px);
+    top: 50%;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border-right: 20px solid #fff;
+    border-top: 15px solid transparent;
+    border-bottom: 15px solid transparent;
+    filter: drop-shadow(2px 0 4px rgba(0, 0, 0, 0.5));
+    z-index: 5;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .pointer[b-3ldpz1l8yu] {
+        right: calc(20vw - 15px);
+        border-right-width: 15px;
+        border-top-width: 12px;
+        border-bottom-width: 12px;
+    }
+}
+
+/* Large screens - ensure pointer stays in the right position */
+@media (min-width: 769px) {
+    .pointer[b-3ldpz1l8yu] {
+        right: calc((100vw - 500px) / 2 - 20px);
+    }
 }
 /* /Layout/MainLayout.razor.rz.scp.css */
 .page[b-9a7i1lu57e] {
