@@ -59,7 +59,7 @@
     transform: translateY(-50%);
     width: 0;
     height: 0;
-    border-left: 20px solid #fff;
+    border-right: 20px solid #fff;
     border-top: 15px solid transparent;
     border-bottom: 15px solid transparent;
     filter: drop-shadow(2px 0 4px rgba(0, 0, 0, 0.5));
@@ -70,7 +70,7 @@
 @media (max-width: 768px) {
     .pointer {
         right: calc(20vw - 15px);
-        border-left-width: 15px;
+        border-right-width: 15px;
         border-top-width: 12px;
         border-bottom-width: 12px;
     }
