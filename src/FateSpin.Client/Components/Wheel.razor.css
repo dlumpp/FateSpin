@@ -21,14 +21,18 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 80px;
-    height: 80px;
+    width: 14vw;
+    height: 14vw;
+    max-width: 80px;
+    max-height: 80px;
+    min-width: 40px;
+    min-height: 40px;
     border-radius: 50%;
     background: linear-gradient(135deg, #fff, #f0f0f0);
     border: 3px solid #333;
     color: #333;
-    font-weight: bold;
-    font-size: 14px;
+    font-weight: 800;
+    font-size: clamp(8px, 2vw, 20px);
     text-transform: uppercase;
     cursor: pointer;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
@@ -74,12 +78,6 @@
         border-right-width: 15px;
         border-top-width: 12px;
         border-bottom-width: 12px;
-    }
-    
-    .spin-button {
-        width: 60px;
-        height: 60px;
-        font-size: 12px;
     }
 }
 
