@@ -6,22 +6,6 @@ html, body {
     height: 100%;
 }
 
-.circle-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-}
-
-.red-circle {
-    width: 60vw;
-    height: 60vw;
-    max-width: 500px;
-    max-height: 500px;
-    background-color: #dc3545;
-    border-radius: 50%;
-}
 
 h1:focus {
     outline: none;

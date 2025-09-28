@@ -1,3 +1,20 @@
+/* /Components/Wheel.razor.rz.scp.css */
+.wheel-container[b-3ldpz1l8yu] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.wheel[b-3ldpz1l8yu] {
+    width: 60vw;
+    height: 60vw;
+    max-width: 500px;
+    max-height: 500px;
+    background-color: #dc3545;
+    border-radius: 50%;
+}
 /* /Layout/MainLayout.razor.rz.scp.css */
 .page[b-9a7i1lu57e] {
     position: relative;
