@@ -1,4 +1,4 @@
-.circle-container {
+.wheel-container {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -6,7 +6,7 @@
     height: 100%;
 }
 
-.red-circle {
+.wheel {
     width: 60vw;
     height: 60vw;
     max-width: 500px;
