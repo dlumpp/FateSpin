@@ -1,9 +1,18 @@
 .wheel-container {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     width: 100%;
     height: 100%;
+    padding: 20px;
+    gap: 30px;
+}
+
+.wheel-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: relative;
 }
 
@@ -14,6 +23,62 @@
     max-height: 500px;
     border-radius: 50%;
     border: 3px solid #444;
+    position: relative;
+}
+
+.wheel-text {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.wheel-label {
+    fill: white;
+    font-size: 12px;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.input-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    max-width: 400px;
+}
+
+.input-section h3 {
+    color: white;
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.wheel-input {
+    width: 100%;
+    min-height: 120px;
+    padding: 12px;
+    border: 2px solid #444;
+    border-radius: 8px;
+    background-color: #333;
+    color: white;
+    font-size: 14px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    resize: vertical;
+}
+
+.wheel-input:focus {
+    outline: none;
+    border-color: #0dcaf0;
+    box-shadow: 0 0 0 2px rgba(13, 202, 240, 0.2);
+}
+
+.wheel-input::placeholder {
+    color: #888;
 }
 
 .spin-button {
@@ -73,11 +138,24 @@
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
+    .wheel-container {
+        padding: 10px;
+        gap: 20px;
+    }
+    
     .pointer {
         right: calc(20vw - 15px);
         border-right-width: 15px;
         border-top-width: 12px;
         border-bottom-width: 12px;
+    }
+    
+    .wheel-label {
+        font-size: 10px;
+    }
+    
+    .input-section {
+        max-width: 90%;
     }
 }
 
@@ -85,5 +163,24 @@
 @media (min-width: 769px) {
     .pointer {
         right: calc((100vw - 500px) / 2 - 20px);
+    }
+}
+
+/* Adjust layout for smaller screens */
+@media (max-height: 700px) {
+    .wheel-container {
+        flex-direction: row;
+        gap: 40px;
+        align-items: flex-start;
+        justify-content: center;
+    }
+    
+    .wheel-wrapper {
+        flex-shrink: 0;
+    }
+    
+    .input-section {
+        max-width: 300px;
+        align-self: center;
     }
 }
