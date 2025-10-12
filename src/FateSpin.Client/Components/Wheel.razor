@@ -54,14 +54,22 @@
 
     private MarkupString RenderTextElement(int index)
     {
-        var angle = (index * degreesPerWedge) + (degreesPerWedge / 2) - 90;
-        var x = 100 + (70 * Math.Cos(angle * Math.PI / 180));
-        var y = 100 + (70 * Math.Sin(angle * Math.PI / 180));
-        var textRotation = angle + 90;
+        // Calculate the angle for this wedge (0 degrees is at 3 o'clock position, where the pointer is)
+        var angle = (index * degreesPerWedge) + (degreesPerWedge / 2);
+        
+        // Position text along a radius from center (starting at about 40% from center)
+        var radius = 55; // Distance from center where text starts
+        var x = 100 + (radius * Math.Cos(angle * Math.PI / 180));
+        var y = 100 + (radius * Math.Sin(angle * Math.PI / 180));
+        
+        // Rotate text so it reads radially outward from center
+        // When angle is 0 (pointing right), text should be horizontal and readable
+        var textRotation = angle;
+        
         var safeText = wheelItems[index].Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("\"", "&quot;");
         
         return new MarkupString($@"<text x=""{x:F2}"" y=""{y:F2}"" 
-                                        text-anchor=""middle"" 
+                                        text-anchor=""start"" 
                                         dominant-baseline=""middle""
                                         transform=""rotate({textRotation:F2} {x:F2} {y:F2})""
                                         class=""wheel-label"">

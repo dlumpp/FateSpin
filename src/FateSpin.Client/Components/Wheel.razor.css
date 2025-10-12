@@ -37,7 +37,7 @@
 
 .wheel-label {
     fill: white;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: bold;
     text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -124,7 +124,7 @@
 
 .pointer {
     position: absolute;
-    right: calc(20vw - 20px);
+    right: -20px;
     top: 50%;
     transform: translateY(-50%);
     width: 0;
@@ -144,7 +144,7 @@
     }
     
     .pointer {
-        right: calc(20vw - 15px);
+        right: -15px;
         border-right-width: 15px;
         border-top-width: 12px;
         border-bottom-width: 12px;
@@ -159,10 +159,10 @@
     }
 }
 
-/* Large screens - ensure pointer stays in the right position */
+/* Large screens - no special positioning needed */
 @media (min-width: 769px) {
     .pointer {
-        right: calc((100vw - 500px) / 2 - 20px);
+        right: -20px;
     }
 }
 
