@@ -1,16 +1,33 @@
 <div class="wheel-container">
-    <div class="wheel" 
-         style="@GetWheelStyle(); transform: rotate(@(currentRotation)deg); @(isSpinning ? "transition: transform 3s cubic-bezier(0.23, 1, 0.32, 1);" : "")"></div>
-    <div class="pointer"></div>
-    <button class="spin-button" @onclick="SpinWheel" disabled="@isSpinning">
-        @(isSpinning ? luckyClover : "Spin!")
-    </button>
+    <div class="wheel-wrapper">
+        <div class="wheel" 
+             style="@GetWheelStyle(); transform: rotate(@(currentRotation)deg); @(isSpinning ? "transition: transform 3s cubic-bezier(0.23, 1, 0.32, 1);" : "")">
+            <svg class="wheel-text" viewBox="0 0 200 200">
+                @for (int i = 0; i < wheelItems.Count; i++)
+                {
+                    @RenderTextElement(i)
+                }
+            </svg>
+        </div>
+        <div class="pointer"></div>
+        <button class="spin-button" @onclick="SpinWheel" disabled="@isSpinning">
+            @(isSpinning ? luckyClover : "Spin!")
+        </button>
+    </div>
+    
+    <div class="input-section">
+        <h3>Customize Your Wheel</h3>
+        <textarea @bind="userInput" @oninput="OnInputChanged" 
+                  placeholder="Enter one item per line&#10;Eat&#10;Sleep&#10;Code" 
+                  class="wheel-input"></textarea>
+    </div>
 </div>
 
 @code {
-    // Hard-coded number of wedges for now - will be configurable later
-    private int numberOfWedges = 6;
-    private double degreesPerWedge => 360.0 / numberOfWedges;
+    // Default wheel items
+    private List<string> wheelItems = new List<string> { "Eat", "Sleep", "Code" };
+    private string userInput = "Eat\nSleep\nCode";
+    private double degreesPerWedge => wheelItems.Count > 0 ? 360.0 / wheelItems.Count : 360.0;
     
     // Theme-appropriate colors that complement the dark background
     private string[] wedgeColors = {
@@ -26,12 +43,64 @@
     private double currentRotation = 0;
     private Random random = new Random();
 
+    private void OnInputChanged(ChangeEventArgs e)
+    {
+        if (e.Value != null)
+        {
+            userInput = e.Value.ToString()!;
+            UpdateWheelItems();
+        }
+    }
+
+    private MarkupString RenderTextElement(int index)
+    {
+        // Calculate the angle for this wedge (0 degrees is at 3 o'clock position, where the pointer is)
+        var angle = (index * degreesPerWedge) + (degreesPerWedge / 2);
+        
+        // Position text along a radius from center (starting at about 40% from center)
+        var radius = 55; // Distance from center where text starts
+        var x = 100 + (radius * Math.Cos(angle * Math.PI / 180));
+        var y = 100 + (radius * Math.Sin(angle * Math.PI / 180));
+        
+        // Rotate text so it reads radially outward from center
+        // When angle is 0 (pointing right), text should be horizontal and readable
+        var textRotation = angle;
+        
+        var safeText = wheelItems[index].Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("\"", "&quot;");
+        
+        return new MarkupString($@"<text x=""{x:F2}"" y=""{y:F2}"" 
+                                        text-anchor=""start"" 
+                                        dominant-baseline=""middle""
+                                        transform=""rotate({textRotation:F2} {x:F2} {y:F2})""
+                                        class=""wheel-label"">
+                                        {safeText}
+                                   </text>");
+    }
+
+    private void UpdateWheelItems()
+    {
+        var items = userInput.Split('\n', StringSplitOptions.RemoveEmptyEntries)
+                            .Select(item => item.Trim())
+                            .Where(item => !string.IsNullOrEmpty(item))
+                            .ToList();
+        
+        if (items.Count > 0)
+        {
+            wheelItems = items;
+        }
+        else
+        {
+            wheelItems = new List<string> { "Empty" };
+        }
+        StateHasChanged();
+    }
+
     private string GetWheelStyle()
     {
         var gradientStops = new List<string>();
         double currentAngle = 0;
         
-        for (int i = 0; i < numberOfWedges; i++)
+        for (int i = 0; i < wheelItems.Count; i++)
         {
             string color = wedgeColors[i % wedgeColors.Length];
             double nextAngle = currentAngle + degreesPerWedge;
