@@ -2,7 +2,7 @@
     <div class="wheel-wrapper">
         <div class="wheel" 
              style="@GetWheelStyle(); transform: rotate(@(currentRotation)deg); @(isSpinning ? "transition: transform 3s cubic-bezier(0.23, 1, 0.32, 1);" : "")">
-            <svg class="wheel-text" viewBox="0 0 200 200" style="transform: rotate(@(currentRotation)deg); @(isSpinning ? "transition: transform 3s cubic-bezier(0.23, 1, 0.32, 1);" : "")">
+            <svg class="wheel-text" viewBox="0 0 200 200">
                 @for (int i = 0; i < wheelItems.Count; i++)
                 {
                     @RenderTextElement(i)
