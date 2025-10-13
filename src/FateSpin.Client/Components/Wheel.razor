@@ -55,6 +55,7 @@
     private MarkupString RenderTextElement(int index)
     {
         // Calculate the angle for this wedge (0 degrees is at 3 o'clock position, where the pointer is)
+        // CSS conic-gradient now starts from 90deg to align with pointer position
         var angle = (index * degreesPerWedge) + (degreesPerWedge / 2);
         
         // Position text along a radius from center (starting at about 40% from center)
@@ -109,7 +110,8 @@
             currentAngle = nextAngle;
         }
         
-        return $"background: conic-gradient(from 0deg, {string.Join(", ", gradientStops)});";
+        // Start gradient from 90deg (3 o'clock) to align with pointer position
+        return $"background: conic-gradient(from 90deg, {string.Join(", ", gradientStops)});";
     }
 
     private string luckyClover = "\U0001F340";
