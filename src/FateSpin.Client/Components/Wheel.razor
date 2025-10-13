@@ -58,22 +58,34 @@
         // CSS conic-gradient now starts from 90deg to align with pointer position
         var angle = (index * degreesPerWedge) + (degreesPerWedge / 2);
         
-        // Position text along a radius from center (starting at about 40% from center)
-        var radius = 55; // Distance from center where text starts
+        var text = wheelItems[index];
+        var safeText = text.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("\"", "&quot;");
+        
+        // Dynamic positioning and sizing based on text length and wedge size
+        var baseRadius = 40;
+        var wedgeWidth = degreesPerWedge * Math.PI / 180 * 80; // Arc length at radius 80
+        var textLength = text.Length;
+        
+        // Adjust radius based on text length - longer text moves inward to fit better
+        var radius = textLength > 8 ? Math.Max(baseRadius - (textLength - 8) * 2, 25) : baseRadius;
+        
+        // Dynamic font size based on text length and available wedge space
+        var baseFontSize = 14.0;
+        var fontSize = Math.Max(baseFontSize - Math.Max(0, textLength - 6), 8.0);
+        fontSize = Math.Min(fontSize, wedgeWidth / textLength * 1.2); // Scale to fit wedge width
+        
         var x = 100 + (radius * Math.Cos(angle * Math.PI / 180));
         var y = 100 + (radius * Math.Sin(angle * Math.PI / 180));
         
         // Rotate text so it reads radially outward from center
-        // When angle is 0 (pointing right), text should be horizontal and readable
         var textRotation = angle;
-        
-        var safeText = wheelItems[index].Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("\"", "&quot;");
         
         return new MarkupString($@"<text x=""{x:F2}"" y=""{y:F2}"" 
                                         text-anchor=""start"" 
                                         dominant-baseline=""middle""
                                         transform=""rotate({textRotation:F2} {x:F2} {y:F2})""
-                                        class=""wheel-label"">
+                                        class=""wheel-label""
+                                        style=""font-size: {fontSize:F1}px;"">
                                         {safeText}
                                    </text>");
     }
