@@ -23,15 +23,33 @@
 
     private double CenterX = 100;
     private double CenterY = 100;
-    private double Radius = 90;
-    private double TextRadius = 60;
+    private double Radius = 97; // Fill almost the entire SVG viewBox (200x200, so radius ~100)
+    private double TextRadius = 65; // Keep text well within the colored wedge area
 
     private double EndAngle => StartAngle + WedgeAngle;
     private double CenterAngle => StartAngle + (WedgeAngle / 2);
     
+    // Dynamic text radius - moves longer text closer to center to stay within wedge
+    private double DynamicTextRadius
+    {
+        get
+        {
+            var baseRadius = TextRadius;
+            var textLength = Text.Length;
+            
+            // For longer text, move closer to center to ensure it stays within the colored wedge
+            if (textLength > 8)
+            {
+                var reduction = Math.Min((textLength - 8) * 3, 20); // Max 20px reduction
+                return Math.Max(baseRadius - reduction, 35); // Minimum radius of 35
+            }
+            return baseRadius;
+        }
+    }
+    
     // Text positioning
-    private double TextX => CenterX + TextRadius * Math.Cos(CenterAngle * Math.PI / 180);
-    private double TextY => CenterY + TextRadius * Math.Sin(CenterAngle * Math.PI / 180);
+    private double TextX => CenterX + DynamicTextRadius * Math.Cos(CenterAngle * Math.PI / 180);
+    private double TextY => CenterY + DynamicTextRadius * Math.Sin(CenterAngle * Math.PI / 180);
     private double TextRotation => CenterAngle;
     
     // Dynamic font sizing
@@ -40,7 +58,7 @@
         get
         {
             var baseFontSize = 14.0;
-            var wedgeWidth = WedgeAngle * Math.PI / 180 * TextRadius; // Arc length at text radius
+            var wedgeWidth = WedgeAngle * Math.PI / 180 * DynamicTextRadius; // Arc length at text radius
             var textLength = Text.Length;
             
             // Scale based on text length and available space
