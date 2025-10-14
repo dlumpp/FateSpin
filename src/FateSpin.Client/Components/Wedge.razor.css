@@ -1,0 +1,27 @@
+/* Wedge component styles */
+
+.wedge-slice {
+    stroke: #444;
+    stroke-width: 2;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+}
+
+.wedge-slice:hover {
+    opacity: 0.8;
+}
+
+.wedge-text {
+    fill: white;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    pointer-events: none; /* Text doesn't interfere with hover */
+}
+
+/* Responsive text sizing */
+@media (max-width: 768px) {
+    .wedge-text {
+        font-size: 10px !important; /* Override inline styles on small screens */
+    }
+}
