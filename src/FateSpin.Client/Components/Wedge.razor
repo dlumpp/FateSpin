@@ -1,0 +1,90 @@
+<g class="wedge">
+    <!-- Wedge path -->
+    <path d="@GetWedgePath()" fill="@Color" class="wedge-slice" />
+    
+    <!-- Text -->
+    <text x="@TextX" y="@TextY" 
+          text-anchor="middle" 
+          dominant-baseline="middle"
+          transform="rotate(@TextRotation @TextX @TextY)"
+          class="wedge-text"
+          style="font-size: @(FontSize)px;">
+        @Text
+    </text>
+</g>
+
+@code {
+    [Parameter] public string Text { get; set; } = "";
+    [Parameter] public string Color { get; set; } = "#dc3545";
+    [Parameter] public double StartAngle { get; set; } = 0;
+    [Parameter] public double WedgeAngle { get; set; } = 90;
+    [Parameter] public int Index { get; set; } = 0;
+    [Parameter] public int TotalWedges { get; set; } = 1;
+
+    private double CenterX = 100;
+    private double CenterY = 100;
+    private double Radius = 97; // Fill almost the entire SVG viewBox (200x200, so radius ~100)
+    private double TextRadius = 65; // Keep text well within the colored wedge area
+
+    private double EndAngle => StartAngle + WedgeAngle;
+    private double CenterAngle => StartAngle + (WedgeAngle / 2);
+    
+    // Dynamic text radius - moves longer text closer to center to stay within wedge
+    private double DynamicTextRadius
+    {
+        get
+        {
+            var baseRadius = TextRadius;
+            var textLength = Text.Length;
+            
+            // For longer text, move closer to center to ensure it stays within the colored wedge
+            if (textLength > 8)
+            {
+                var reduction = Math.Min((textLength - 8) * 3, 20); // Max 20px reduction
+                return Math.Max(baseRadius - reduction, 35); // Minimum radius of 35
+            }
+            return baseRadius;
+        }
+    }
+    
+    // Text positioning
+    private double TextX => CenterX + DynamicTextRadius * Math.Cos(CenterAngle * Math.PI / 180);
+    private double TextY => CenterY + DynamicTextRadius * Math.Sin(CenterAngle * Math.PI / 180);
+    private double TextRotation => CenterAngle;
+    
+    // Dynamic font sizing
+    private double FontSize
+    {
+        get
+        {
+            var baseFontSize = 14.0;
+            var wedgeWidth = WedgeAngle * Math.PI / 180 * DynamicTextRadius; // Arc length at text radius
+            var textLength = Text.Length;
+            
+            // Scale based on text length and available space
+            var fontSize = Math.Max(baseFontSize - Math.Max(0, textLength - 6), 8.0);
+            fontSize = Math.Min(fontSize, wedgeWidth / textLength * 1.5);
+            
+            return Math.Max(fontSize, 8.0); // Minimum 8px
+        }
+    }
+
+    private string GetWedgePath()
+    {
+        // Convert angles to radians
+        var startRad = StartAngle * Math.PI / 180;
+        var endRad = EndAngle * Math.PI / 180;
+        
+        // Calculate start and end points on the circle
+        var startX = CenterX + Radius * Math.Cos(startRad);
+        var startY = CenterY + Radius * Math.Sin(startRad);
+        var endX = CenterX + Radius * Math.Cos(endRad);
+        var endY = CenterY + Radius * Math.Sin(endRad);
+        
+        // Determine if we need the large arc flag (for arcs > 180°)
+        var largeArcFlag = WedgeAngle > 180 ? 1 : 0;
+        
+        // Create SVG path: Move to center, Line to start, Arc to end, Line back to center
+        return $"M {CenterX} {CenterY} L {startX:F2} {startY:F2} A {Radius} {Radius} 0 {largeArcFlag} 1 {endX:F2} {endY:F2} Z";
+    }
+}
