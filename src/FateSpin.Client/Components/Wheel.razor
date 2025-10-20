@@ -1,15 +1,11 @@
 <div class="wheel-container">
     <div class="wheel-wrapper">
-        <div class="wheel-svg-container" style="transform: rotate(@(currentRotation)deg); @(isSpinning ? "transition: transform 3s cubic-bezier(0.23, 1, 0.32, 1);" : "")">
-            <svg class="wheel-svg" viewBox="0 0 200 200">
+        <div class="wheel" 
+             style="@GetWheelStyle(); transform: rotate(@(currentRotation)deg); @(isSpinning ? "transition: transform 3s cubic-bezier(0.23, 1, 0.32, 1);" : "")">
+            <svg class="wheel-text" viewBox="0 0 200 200">
                 @for (int i = 0; i < wheelItems.Count; i++)
                 {
-                    <Wedge Text="@wheelItems[i]" 
-                           Color="@wedgeColors[i % wedgeColors.Length]"
-                           StartAngle="@(i * degreesPerWedge)"
-                           WedgeAngle="@degreesPerWedge"
-                           Index="@i"
-                           TotalWedges="@wheelItems.Count" />
+                    @RenderTextElement(i)
                 }
             </svg>
         </div>
@@ -56,6 +52,44 @@
         }
     }
 
+    private MarkupString RenderTextElement(int index)
+    {
+        // Calculate the angle for this wedge (0 degrees is at 3 o'clock position, where the pointer is)
+        // CSS conic-gradient now starts from 90deg to align with pointer position
+        var angle = (index * degreesPerWedge) + (degreesPerWedge / 2);
+        
+        var text = wheelItems[index];
+        var safeText = text.Replace("&", "&amp;").Replace("<", "&lt;").Replace(">", "&gt;").Replace("\"", "&quot;");
+        
+        // Dynamic positioning and sizing based on text length and wedge size
+        var baseRadius = 40;
+        var wedgeWidth = degreesPerWedge * Math.PI / 180 * 80; // Arc length at radius 80
+        var textLength = text.Length;
+        
+        // Adjust radius based on text length - longer text moves inward to fit better
+        var radius = textLength > 8 ? Math.Max(baseRadius - (textLength - 8) * 2, 25) : baseRadius;
+        
+        // Dynamic font size based on text length and available wedge space
+        var baseFontSize = 14.0;
+        var fontSize = Math.Max(baseFontSize - Math.Max(0, textLength - 6), 8.0);
+        fontSize = Math.Min(fontSize, wedgeWidth / textLength * 1.2); // Scale to fit wedge width
+        
+        var x = 100 + (radius * Math.Cos(angle * Math.PI / 180));
+        var y = 100 + (radius * Math.Sin(angle * Math.PI / 180));
+        
+        // Rotate text so it reads radially outward from center
+        var textRotation = angle;
+        
+        return new MarkupString($@"<text x=""{x:F2}"" y=""{y:F2}"" 
+                                        text-anchor=""start"" 
+                                        dominant-baseline=""middle""
+                                        transform=""rotate({textRotation:F2} {x:F2} {y:F2})""
+                                        class=""wheel-label""
+                                        style=""font-size: {fontSize:F1}px;"">
+                                        {safeText}
+                                   </text>");
+    }
+
     private void UpdateWheelItems()
     {
         var items = userInput.Split('\n', StringSplitOptions.RemoveEmptyEntries)
@@ -72,6 +106,24 @@
             wheelItems = new List<string> { "Empty" };
         }
         StateHasChanged();
+    }
+
+    private string GetWheelStyle()
+    {
+        var gradientStops = new List<string>();
+        double currentAngle = 0;
+        
+        for (int i = 0; i < wheelItems.Count; i++)
+        {
+            string color = wedgeColors[i % wedgeColors.Length];
+            double nextAngle = currentAngle + degreesPerWedge;
+            
+            gradientStops.Add($"{color} {currentAngle}deg {nextAngle}deg");
+            currentAngle = nextAngle;
+        }
+        
+        // Start gradient from 90deg (3 o'clock) to align with pointer position
+        return $"background: conic-gradient(from 90deg, {string.Join(", ", gradientStops)});";
     }
 
     private string luckyClover = "\U0001F340";
