@@ -6,10 +6,15 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+      
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-
+    
     steps:
     - name: Checkout repository
       uses: actions/checkout@v5
@@ -25,9 +30,16 @@ jobs:
     - name: Publish Blazor WebAssembly project
       run: dotnet publish src/FateSpin.Client -c Release -o publish
 
-    - name: Deploy to GitHub Pages
-      uses: peaceiris/actions-gh-pages@v4
+    - name: Rewrite base href
+      uses: SteveSandersonMS/ghaction-rewrite-base-href@v1.1.0
       with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: publish/wwwroot
-        force_orphan: true
+        html_path: publish/wwwroot/index.html
+        base_href: /FateSpin/
+
+    - name: Upload artifact for GitHub Pages
+      uses: actions/upload-pages-artifact@v3
+      with:
+        path: publish/wwwroot
+
+    - name: Deploy to GitHub Pages
+      uses: actions/deploy-pages@v4
